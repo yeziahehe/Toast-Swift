@@ -487,7 +487,7 @@ public extension UIView {
         var titleRect = CGRect.zero
         
         if let titleLabel = titleLabel {
-            titleRect.origin.x = imageRect.origin.x + imageRect.size.width + style.horizontalPadding
+            titleRect.origin.x = imageRect.origin.x + imageRect.size.width + (imageRect.size.width == 0.0 ? style.horizontalPadding : style.contentHorizontalPadding)
             titleRect.origin.y = style.verticalPadding
             titleRect.size.width = titleLabel.bounds.size.width
             titleRect.size.height = titleLabel.bounds.size.height
@@ -496,7 +496,7 @@ public extension UIView {
         var messageRect = CGRect.zero
         
         if let messageLabel = messageLabel {
-            messageRect.origin.x = imageRect.origin.x + imageRect.size.width + style.horizontalPadding
+            messageRect.origin.x = imageRect.origin.x + imageRect.size.width + (imageRect.size.width == 0.0 ? style.horizontalPadding : style.contentHorizontalPadding)
             messageRect.origin.y = titleRect.origin.y + titleRect.size.height + style.verticalPadding
             messageRect.size.width = messageLabel.bounds.size.width
             messageRect.size.height = messageLabel.bounds.size.height
@@ -504,7 +504,7 @@ public extension UIView {
         
         let longerWidth = max(titleRect.size.width, messageRect.size.width)
         let longerX = max(titleRect.origin.x, messageRect.origin.x)
-        let wrapperWidth = max((imageRect.size.width + (style.horizontalPadding * 2.0)), (longerX + longerWidth + style.horizontalPadding))
+        let wrapperWidth = max((imageRect.size.width + (style.horizontalPadding * 2.0)), (longerX + longerWidth + (imageRect.size.width == 0.0 ? style.horizontalPadding : style.contentHorizontalPadding)))
         let wrapperHeight = max((messageRect.origin.y + messageRect.size.height + style.verticalPadding), (imageRect.size.height + (style.verticalPadding * 2.0)))
         
         wrapperView.frame = CGRect(x: 0.0, y: 0.0, width: wrapperWidth, height: wrapperHeight)
@@ -596,6 +596,14 @@ public struct ToastStyle {
      and `safeAreaInsets.bottom`.
     */
     public var verticalPadding: CGFloat = 10.0
+    
+    /**
+     When an image
+     is present, this is also used as the padding between the image and the text.
+     Default is 10.0.
+     
+    */
+    public var contentHorizontalPadding: CGFloat = 10.0
     
     /**
      The corner radius. Default is 10.0.
